@@ -1,8 +1,7 @@
 <script setup>
-import { computed,ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useInvoiceStore } from '../store/invoiceStore';
 import { validateInvoiceForm } from '../utils/validation';
-
 import Modal from '../components/Modal.vue';
 
 const invoiceStore = useInvoiceStore();
@@ -39,7 +38,6 @@ const deleteInvoice = () => {
   invoiceStore.deleteInvoiceById(selectedInvoice.value.id);
   showDeleteModal.value = false;
 };
-
 </script>
 
 <template>
@@ -48,29 +46,31 @@ const deleteInvoice = () => {
         <router-link to="/create">
             <button class="add-button">+ Add Invoice</button>
         </router-link>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Amount</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in invoices" :key="index">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.status }}</td>
-                    <td>Rp.{{ item.amount }},-</td>
-                    <td class="action-table">
-                        <button @click="openEditModal(item)">Edit</button>
-                        <button @click="openDeleteModal(item)">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in invoices" :key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.status }}</td>
+                        <td>Rp.{{ item.amount }},-</td>
+                        <td class="action-buttons">
+                            <button @click="openEditModal(item)">Edit</button>
+                            <button @click="openDeleteModal(item)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <Modal v-if="showEditModal" title="Edit Invoice" @close="showEditModal = false">
             <form @submit.prevent="handleUpdateInvoice" class="modal-form">
@@ -91,16 +91,17 @@ const deleteInvoice = () => {
             </form>
         </Modal>
 
-        <Modal v-if="showDeleteModal" title="Confirm Deletion" confirmText="Yes, Delete" @confirm="deleteInvoice" @close="showDeleteModal = false" :useCancel="true">
+        <Modal v-if="showDeleteModal" title="Confirm Deletion" confirmText="Yes, Delete" @confirm="deleteInvoice" @close="showDeleteModal = false">
             <p>Are you sure you want to delete this invoice?</p>
         </Modal>
-
     </div>
 </template>
 
 <style scoped>
 .home {
     padding: 20px;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 h2 {
@@ -117,14 +118,24 @@ h2 {
     cursor: pointer;
 }
 
-table {
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    max-width: 100%;
+}
+
+.table-container table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 600px;
 }
 
 th, td {
     padding: 10px;
     border: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
 }
 
 th {
@@ -132,24 +143,15 @@ th {
     color: white;
 }
 
-td a {
-    color: #b92f1e;
-    text-decoration: none;
-}
-
-td a:hover {
-    text-decoration: underline;
-}
-
-.action-table {
+.action-buttons {
     display: flex;
-    justify-content: space-around;
+    gap: 5px;
 }
 
 .error {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: 5px;
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
 }
 
 .modal-form {
@@ -157,6 +159,9 @@ td a:hover {
     flex-direction: column;
     gap: 15px;
     padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     margin: auto;
 }
@@ -169,7 +174,7 @@ td a:hover {
 
 input, select {
     width: 100%;
-    padding: 10px 5px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
@@ -194,7 +199,37 @@ button[type="button"] {
     color: black;
 }
 
-button:hover {
-    opacity: 0.8;
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .table-container table {
+        font-size: 0.9rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .home {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home h2 {
+        font-size: 1.2rem;
+    }
+
+    .table-container table {
+        font-size: 0.8rem;
+    }
 }
 </style>
