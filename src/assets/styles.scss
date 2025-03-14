@@ -1,0 +1,25 @@
+$main-red: #b92f1e;
+$orange: #FFA111;
+$navy: #2A2A30;
+$text-light: #212529;
+$text-dark: #fff;
+$bold-title: #FFA111;
+$footer-bg: #3F3F3F;
+$footer-text: #B9B9B9;
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: $text-light;
+    background-color: #f8f9fa;
+}
+
+button {
+    background: $main-red;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+    &:hover {
+        background: darken($main-red, 10%);
+  }
+}
