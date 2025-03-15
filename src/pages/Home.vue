@@ -86,6 +86,14 @@ const deleteInvoice = () => {
                     <input v-model="selectedInvoice.amount" type="number" id="amount" placeholder="Enter amount" @input="validateForm" />
                     <p v-if="errors.amount" class="error">{{ errors.amount }}</p>
                 </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                        <select v-model="selectedInvoice.status" id="status">
+                            <option value="Paid">Paid</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Unpaid">Unpaid</option>
+                        </select>
+                </div>
                 <div class="modal-actions">
                     <button type="submit" :disabled="Object.keys(errors).length > 0">Save Changes</button>
                     <button type="button" @click="showEditModal = false">Cancel</button>
