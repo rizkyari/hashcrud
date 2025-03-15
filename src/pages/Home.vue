@@ -1,9 +1,11 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useInvoiceStore } from '../store/invoiceStore';
+import { useThemeStore } from '../store/themeStore';
 import { validateInvoiceForm } from '../utils/validation';
 import Modal from '../components/Modal.vue';
 
+const themeStore = useThemeStore();
 const invoiceStore = useInvoiceStore();
 const invoices = computed(() => invoiceStore.invoices);
 
@@ -41,7 +43,7 @@ const deleteInvoice = () => {
 </script>
 
 <template>
-    <div class="home">
+    <div class="home" :class="{'dark': themeStore.isDarkMode}">
         <h2>Invoices</h2>
         <router-link to="/create">
             <button class="add-button">+ Add Invoice</button>
@@ -199,6 +201,13 @@ button[type="button"] {
     color: black;
 }
 
+.dark {
+    color: #FFA111;
+}
+
+.dark h2{
+    color: #FFA111;
+}
 @media (max-width: 768px) {
     .table-container {
         overflow-x: auto;
